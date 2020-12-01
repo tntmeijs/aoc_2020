@@ -1,5 +1,5 @@
-use day_one::DayOne;
-use shared::puzzle_input::PuzzleTrait;
+use day_one::solution::logic::DayOne;
+use shared::traits::puzzle_trait::PuzzleTrait;
 
 fn main() {
     println!("Learning Rust with the Advent of Code!");
