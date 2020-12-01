@@ -36,5 +36,21 @@ impl shared::puzzle_input::PuzzleTrait for DayOne {
         }
     }
 
-    fn solve_part_two(&self) {}
+    // Part two: same as part one, but with three instead of two numbers
+    fn solve_part_two(&self) {
+        let vec_ints: Vec<u32> = self.input.iter().map(|value| value.parse().unwrap()).collect();
+
+        // O(scary), but as I said, I <3 brute force solutions!
+        for value_a in &vec_ints {
+            for value_b in &vec_ints {
+                for value_c in &vec_ints {
+                    if value_a + value_b + value_c == 2020 {
+                        println!("{} + {} + {} = 2020", value_a, value_b, value_c);
+                        println!("Answer part two: {}", value_a * value_b * value_c);
+                        return
+                    }
+                }
+            }
+        }
+    }
 }
