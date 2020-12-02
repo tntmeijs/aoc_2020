@@ -3,7 +3,7 @@ use shared::traits::puzzle_trait::PuzzleTrait;
 
 struct ParsedInput {
     password: String,
-    target: String,
+    target: char,
     index_one: usize,
     index_two: usize
 }
@@ -33,7 +33,7 @@ impl DayTwo {
         // Deconstruct policy info
         let min_max: Vec<usize> = policy_info.split('-').map(|value| value.parse().unwrap()).collect();
 
-        ParsedInput { password: password.to_string(), index_one: min_max[0], index_two: min_max[1], target: target.to_string() }
+        ParsedInput { password: password.to_string(), index_one: min_max[0], index_two: min_max[1], target: target.chars().nth(0).unwrap() }
     }
 }
 
@@ -48,22 +48,44 @@ impl PuzzleTrait for DayTwo {
 
     // Part one: find how many passwords are valid according to the rules
     fn solve_part_one(&self) {
-        let mut valid_password_count: u32 = 0;
+        let mut valid_password_count = 0;
 
         for input in &self.input {
             let parsed_input = self.parse(input);
 
-            // Password validation
-            let occurances = parsed_input.password.matches(&parsed_input.target).count();
+            // Check if the target character occurs as often as the policy dictates
+            let occurances = parsed_input.password.matches(parsed_input.target).count();
             if occurances >= parsed_input.index_one && occurances <= parsed_input.index_two {
                 valid_password_count += 1;
             }
         }
 
-        println!("Answer part one: {}", valid_password_count);
+        println!("Answer part one: {} valid passwords", valid_password_count);
     }
 
-    // Part two: ___
+    // Part two: validate if characters are at the expected index
     fn solve_part_two(&self) {
+        let mut valid_password_count = 0;
+
+        for input in &self.input {
+            let parsed_input = self.parse(input);
+
+            // Indexing starts at 0 in Rust, but the problem requires indexing to start at one
+            let first_index_char = parsed_input.password.chars().nth(parsed_input.index_one - 1).unwrap();
+            let second_index_char = parsed_input.password.chars().nth(parsed_input.index_two - 1).unwrap();
+
+            // Policy violation: both characters need to be different
+            if first_index_char == second_index_char {
+                continue;
+            }
+
+            // One of the two characters has to equal the target character
+            // The check above already eliminates the possibility of duplicate characters
+            if first_index_char == parsed_input.target || second_index_char == parsed_input.target {
+                valid_password_count += 1;
+            }
+        }
+
+        println!("Answer part two: {} valid passwords", valid_password_count);
     }
 }
