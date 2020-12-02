@@ -17,7 +17,7 @@ impl PuzzleTrait for DayOne {
     }
 
     fn gather_input(&mut self) {
-        self.input = read_input_as_vec("D:/Projects/aoc_2020/input/day_one.txt");
+        self.input = read_input_as_vec("./input/day_one.txt");
     }
 
     // Part one: in the input list, find two entries that sum to 2020 and multiply them
