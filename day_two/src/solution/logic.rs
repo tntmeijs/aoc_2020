@@ -1,6 +1,13 @@
 use shared::file_io::input::read_input_as_vec;
 use shared::traits::puzzle_trait::PuzzleTrait;
 
+struct ParsedInput {
+    password: String,
+    target: String,
+    index_one: usize,
+    index_two: usize
+}
+
 pub struct DayTwo {
     input: Vec<String>
 }
@@ -8,6 +15,25 @@ pub struct DayTwo {
 impl DayTwo {
     pub fn new() -> DayTwo {
         DayTwo { input: Vec::new() }
+    }
+
+    fn parse(&self, input: &str) -> ParsedInput {
+        let parts: Vec<&str> = input.split(':').collect();
+
+        // Relevant input data without whitespaces
+        let policy = parts[0].trim();
+        let password = parts[1].trim();
+
+        // Deconstruct the policy string into the information and the character it applies to
+        let policy_parts: Vec<&str> = policy.split(' ').collect();
+
+        let policy_info = policy_parts[0];
+        let target = policy_parts[1];
+
+        // Deconstruct policy info
+        let min_max: Vec<usize> = policy_info.split('-').map(|value| value.parse().unwrap()).collect();
+
+        ParsedInput { password: password.to_string(), index_one: min_max[0], index_two: min_max[1], target: target.to_string() }
     }
 }
 
@@ -25,42 +51,11 @@ impl PuzzleTrait for DayTwo {
         let mut valid_password_count: u32 = 0;
 
         for input in &self.input {
-            let parts: Vec<&str> = input.split(':').collect();
-            
-            // Invalid input
-            if parts.len() != 2 {
-                continue;
-            }
-
-            // Relevant input data without whitespaces
-            let policy = parts[0].trim();
-            let password = parts[1].trim();
-
-            // Deconstruct the policy string into the information and the character it applies to
-            let policy_parts: Vec<&str> = policy.split(' ').collect();
-
-            // Invalid input
-            if policy_parts.len() != 2 {
-                continue;
-            }
-
-            let policy_info = policy_parts[0];
-            let target_character = policy_parts[1];
-
-            // Deconstruct policy info
-            let min_max: Vec<usize> = policy_info.split('-').map(|value| value.parse().unwrap()).collect();
-
-            // Invalid input
-            if min_max.len() != 2 {
-                continue;
-            }
-
-            let min = min_max[0];
-            let max = min_max[1];
+            let parsed_input = self.parse(input);
 
             // Password validation
-            let occurances = password.matches(target_character).count();
-            if occurances >= min && occurances <= max {
+            let occurances = parsed_input.password.matches(&parsed_input.target).count();
+            if occurances >= parsed_input.index_one && occurances <= parsed_input.index_two {
                 valid_password_count += 1;
             }
         }
