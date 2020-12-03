@@ -5,7 +5,6 @@ use shared::traits::puzzle_trait::PuzzleTrait;
 
 // #TODO: Since these objects all implement PuzzleTrait we can put them in a Vec<PuzzleTrait>
 fn main() {
-    println!("Learning Rust with the Advent of Code!");
     let mut day_1 = DayOne::new();
     let mut day_2 = DayTwo::new();
     let mut day_3 = DayThree::new();
@@ -15,10 +14,14 @@ fn main() {
     day_1.solve_part_one();
     day_1.solve_part_two();
 
+    println!();
+
     day_2.print_info();
     day_2.gather_input();
     day_2.solve_part_one();
     day_2.solve_part_two();
+
+    println!();
 
     day_3.print_info();
     day_3.gather_input();
