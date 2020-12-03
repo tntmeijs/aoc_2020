@@ -20,7 +20,7 @@ impl PuzzleTrait for DayThree {
         self.input = read_input_as_vec("./input/day_three.txt");
     }
 
-    // Part one: find how many passwords are valid according to the rules
+    // Part one: find how many threes you encounter when moving right 3, down 1
     fn solve_part_one(&self) {
     }
 
