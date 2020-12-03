@@ -23,7 +23,7 @@ impl DayThree {
     }
 }
 
-fn traverse_slope(right: usize, down: usize, input: &InputData) -> u32 {
+fn traverse_slope(right: usize, down: usize, input: &InputData) -> u64 {
     let mut current_row = 0;
     let mut current_column = 0;
     let mut tree_count = 0;
