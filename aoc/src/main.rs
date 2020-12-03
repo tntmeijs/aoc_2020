@@ -3,6 +3,7 @@ use day_two::solution::logic::DayTwo;
 use day_three::solution::logic::DayThree;
 use shared::traits::puzzle_trait::PuzzleTrait;
 
+// #TODO: Since these objects all implement PuzzleTrait we can put them in a Vec<PuzzleTrait>
 fn main() {
     println!("Learning Rust with the Advent of Code!");
     let mut day_1 = DayOne::new();
@@ -18,4 +19,9 @@ fn main() {
     day_2.gather_input();
     day_2.solve_part_one();
     day_2.solve_part_two();
+
+    day_3.print_info();
+    day_3.gather_input();
+    day_3.solve_part_one();
+    day_3.solve_part_two();
 }
