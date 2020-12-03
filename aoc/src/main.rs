@@ -1,11 +1,13 @@
 use day_one::solution::logic::DayOne;
 use day_two::solution::logic::DayTwo;
+use day_three::solution::logic::DayThree;
 use shared::traits::puzzle_trait::PuzzleTrait;
 
 fn main() {
     println!("Learning Rust with the Advent of Code!");
     let mut day_1 = DayOne::new();
     let mut day_2 = DayTwo::new();
+    let mut day_3 = DayThree::new();
 
     day_1.print_info();
     day_1.gather_input();

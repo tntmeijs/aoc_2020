@@ -2,5 +2,6 @@
 members = [
     "aoc",
     "shared",
-    "day_one"
+    "day_one",
+    "day_three"
 ]
