@@ -58,37 +58,6 @@ impl PuzzleTrait for DayFour {
         let mut found_country_id        = "".to_string();
 
         for (index, line) in raw_input.iter().enumerate() {
-            // If the line is an empty line (or the end of the file has been reached), the end of a password batch has been reached
-            if line.trim().is_empty() || index == raw_input.len() - 1 {
-                let new_passport = Passport {
-                    birth_year:         found_birth_year.to_string(),
-                    issue_year:         found_issue_year.to_string(),
-                    expiration_year:    found_expiration_year.to_string(),
-                    height:             found_height.to_string(),
-                    hair_color:         found_hair_color.to_string(),
-                    eye_color:          found_eye_color.to_string(),
-                    passport_id:        found_passport_id.to_string(),
-                    country_id:         found_country_id.to_string()
-                };
-
-                if new_passport.is_valid_ignore_country() {
-                    self.valid_passports.push(new_passport);
-                } else {
-                    println!("Invalid: {:?}", new_passport);
-                    self.invalid_passports.push(new_passport);
-                }
-
-                // Reset tracking variables
-                found_birth_year        = "".to_string();
-                found_issue_year        = "".to_string();
-                found_expiration_year   = "".to_string();
-                found_height            = "".to_string();
-                found_hair_color        = "".to_string();
-                found_eye_color         = "".to_string();
-                found_passport_id       = "".to_string();
-                found_country_id        = "".to_string();
-            }
-
             // Split the line by spaces to get key-value pairs as a string
             let mut key_value_pairs: Vec<String> = Vec::new();
             for part in line.split(' ') {
@@ -123,6 +92,37 @@ impl PuzzleTrait for DayFour {
                 } else if key == "cid" {
                     found_country_id = value.to_string();
                 }
+            }
+
+            // If the line is an empty line
+            if line.trim().is_empty() || index == raw_input.len() - 1 {
+                let new_passport = Passport {
+                    birth_year:         found_birth_year.to_string(),
+                    issue_year:         found_issue_year.to_string(),
+                    expiration_year:    found_expiration_year.to_string(),
+                    height:             found_height.to_string(),
+                    hair_color:         found_hair_color.to_string(),
+                    eye_color:          found_eye_color.to_string(),
+                    passport_id:        found_passport_id.to_string(),
+                    country_id:         found_country_id.to_string()
+                };
+
+                // Store a passport no matter if it is valid or not
+                if new_passport.is_valid_ignore_country() {
+                    self.valid_passports.push(new_passport);
+                } else {
+                    self.invalid_passports.push(new_passport);
+                }
+
+                // Reset tracking variables
+                found_birth_year        = "".to_string();
+                found_issue_year        = "".to_string();
+                found_expiration_year   = "".to_string();
+                found_height            = "".to_string();
+                found_hair_color        = "".to_string();
+                found_eye_color         = "".to_string();
+                found_passport_id       = "".to_string();
+                found_country_id        = "".to_string();
             }
         }
     }
