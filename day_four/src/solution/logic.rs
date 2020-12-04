@@ -129,7 +129,7 @@ impl PuzzleTrait for DayFour {
 
     // Part one: check how many documents are valid passports
     fn solve_part_one(&self) {
-        println!("Answer part one: {} valid passwords", self.valid_passports.len());
+        println!("Answer part one: {} valid passwords (including those without a country ID)", self.valid_passports.len());
     }
 
     // Part two: ___
