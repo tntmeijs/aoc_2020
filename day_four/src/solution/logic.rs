@@ -13,8 +13,12 @@ struct Passport {
     country_id: String
 }
 
+fn string_to_u32(input: &str) -> u32 {
+    input.trim().parse().expect("Unable to convert from string to u32")
+}
+
 impl Passport {
-    fn is_valid_ignore_country(&self) -> bool {
+    fn passes_basic_validation(&self) -> bool {
         !self.birth_year.is_empty()         &&
         !self.issue_year.is_empty()         &&
         !self.expiration_year.is_empty()    &&
@@ -24,19 +28,127 @@ impl Passport {
         !self.passport_id.is_empty()
     }
 
-    fn has_country_id(&self) -> bool {
-        !self.country_id.is_empty()
+    fn has_valid_birth_year(&self) -> bool {
+        if self.birth_year.len() != 4 {
+            return false;
+        }
+
+        let year = string_to_u32(&self.birth_year);
+        year >= 1920 && year <= 2002
+    }
+
+    fn has_valid_issue_year(&self) -> bool {
+        if self.birth_year.len() != 4 {
+            return false;
+        }
+
+        let year = string_to_u32(&self.issue_year);
+        year >= 2010 && year <= 2020
+    }
+
+    fn has_valid_expiration_year(&self) -> bool {
+        if self.expiration_year.len() != 4 {
+            return false;
+        }
+
+        let year = string_to_u32(&self.expiration_year);
+        year >= 2020 && year <= 2030
+    }
+
+    fn has_valid_height(&self) -> bool {
+        if self.height.contains("cm") {
+            let parts = self.height.split("cm").collect::<Vec<&str>>();
+            let height = string_to_u32(parts[0]);
+            height >= 150 && height <= 193
+        } else if self.height.contains("in") {
+            let parts = self.height.split("in").collect::<Vec<&str>>();
+            let height = string_to_u32(parts[0]);
+            height >= 59 && height <= 76
+        } else {
+            false
+        }
+    }
+
+    fn has_valid_hair_color(&self) -> bool {
+        if self.hair_color.len() != 7 || self.hair_color.chars().nth(0).unwrap() != '#' {
+            return false;
+        }
+
+        let hex_code = self.hair_color[1..7].to_string();
+
+        // Ensure the hexadecimal color code is valid
+        for character in hex_code.chars() {
+            match character {
+                '0' => (),
+                '1' => (),
+                '2' => (),
+                '3' => (),
+                '4' => (),
+                '5' => (),
+                '6' => (),
+                '7' => (),
+                '8' => (),
+                '9' => (),
+                'a' => (),
+                'b' => (),
+                'c' => (),
+                'd' => (),
+                'e' => (),
+                'f' => (),
+                _ => return false
+            }
+        }
+
+        true
+    }
+
+    fn has_valid_eye_color(&self) -> bool {
+        self.eye_color == "amb" ||
+        self.eye_color == "blu" ||
+        self.eye_color == "brn" ||
+        self.eye_color == "gry" ||
+        self.eye_color == "grn" ||
+        self.eye_color == "hzl" ||
+        self.eye_color == "oth"
+    }
+
+    fn has_valid_passport_id(&self) -> bool {
+        self.passport_id.len() == 9
+    }
+
+    fn passes_strict_validation(&self) -> bool {
+        // Need to have at least some content in the variables
+        if !self.passes_basic_validation() {
+            return false;
+        }
+
+        let valid_birth_year = self.has_valid_birth_year();
+        let valid_issue_year = self.has_valid_issue_year();
+        let valid_expiration_year = self.has_valid_expiration_year();
+        let valid_height = self.has_valid_height();
+        let valid_hair_color = self.has_valid_hair_color();
+        let valid_eye_color = self.has_valid_eye_color();
+        let valid_passport_id = self.has_valid_passport_id();
+
+        let result = valid_birth_year      &&
+        valid_issue_year      &&
+        valid_expiration_year &&
+        valid_height          &&
+        valid_hair_color      &&
+        valid_eye_color       &&
+        valid_passport_id;
+
+        result
     }
 }
 
 pub struct DayFour {
-    valid_passports: Vec<Passport>,
-    invalid_passports: Vec<Passport>
+    parsed_passports: Vec<Passport>
 }
 
 impl DayFour {
     pub fn new() -> DayFour {
-        DayFour { valid_passports: Vec::new(), invalid_passports: Vec::new() }
+        DayFour { parsed_passports: Vec::new() }
     }
 }
 
@@ -108,11 +220,7 @@ impl PuzzleTrait for DayFour {
                 };
 
                 // Store a passport no matter if it is valid or not
-                if new_passport.is_valid_ignore_country() {
-                    self.valid_passports.push(new_passport);
-                } else {
-                    self.invalid_passports.push(new_passport);
-                }
+                self.parsed_passports.push(new_passport);
 
                 // Reset tracking variables
                 found_birth_year        = "".to_string();
@@ -129,10 +237,25 @@ impl PuzzleTrait for DayFour {
 
     // Part one: check how many documents are valid passports
     fn solve_part_one(&self) {
-        println!("Answer part one: {} valid passwords (including those without a country ID)", self.valid_passports.len());
+        let mut valid_simple_validation = 0;
+        for passport in &self.parsed_passports {
+            if passport.passes_basic_validation() {
+                valid_simple_validation += 1;
+            }
+        }
+
+        println!("Answer part one: {} valid passwords with basic validation (including those without a country ID)", valid_simple_validation);
     }
 
-    // Part two: ___
+    // Part two: check passports against stricter rules
     fn solve_part_two(&self) {
+        let mut valid_strict_validation = 0;
+        for passport in &self.parsed_passports {
+            if passport.passes_strict_validation() {
+                valid_strict_validation += 1;
+            }
+        }
+
+        println!("Answer part two: {} valid passwords with strict validation (including those without a country ID)", valid_strict_validation);
     }
 }
