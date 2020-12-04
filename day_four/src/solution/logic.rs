@@ -130,15 +130,13 @@ impl Passport {
         let valid_eye_color = self.has_valid_eye_color();
         let valid_passport_id = self.has_valid_passport_id();
 
-        let result = valid_birth_year      &&
+        valid_birth_year      &&
         valid_issue_year      &&
         valid_expiration_year &&
         valid_height          &&
         valid_hair_color      &&
         valid_eye_color       &&
-        valid_passport_id;
-
-        result
+        valid_passport_id
     }
 }
 
