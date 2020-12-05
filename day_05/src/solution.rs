@@ -11,51 +11,70 @@ impl Day05 {
     }
 }
 
+enum Operation {
+    TakeLowerHalf,
+    TakeUpperHalf
+}
+
+struct LowHighRange {
+    lower: u8,
+    higher: u8
+}
+
+impl LowHighRange {
+    // Check if the range has been narrowed down to a single value
+    fn is_complete(&self) -> bool {
+        self.lower == self.higher
+    }
+}
+
+// Split the range either into the upper half, or into the lower half
+fn calculate_correct_half(values: LowHighRange, operation: Operation) -> LowHighRange {
+    let difference = values.higher as f64 - values.lower as f64;
+    let half = (difference / 2.0).ceil() as u8;
+
+    let mut result = LowHighRange { lower: values.lower, higher: values.higher };
+
+    match operation {
+        Operation::TakeLowerHalf => result.higher -= half,
+        Operation::TakeUpperHalf => result.lower += half
+    }
+
+    result
+}
+
 // Returns the seat ID from the boarding pass
 fn get_seat_id_from_boarding_pass(boarding_pass: &str) -> u32 {
-    let mut lower_row = 0;
-    let mut higher_row = 127;
-
-    let mut lower_seat = 0;
-    let mut higher_seat = 7;
+    let mut row_range = LowHighRange { lower: 0, higher: 127 };
+    let mut seat_range = LowHighRange { lower: 0, higher: 7 };
 
     for character in boarding_pass.chars() {
         if character != 'L' && character != 'R' {
-            let difference: f64 = higher_row as f64 - lower_row as f64;
-            let half = (difference / 2.0).ceil() as u8;
-
-            // Find correct row
+            // Find the row that contains the seat
             if character == 'F' {
-                // Take lower half
-                higher_row -= half;
-            } else {
-                // Take upper half
-                lower_row += half;
+                row_range = calculate_correct_half(row_range, Operation::TakeLowerHalf);
+            } else if character == 'B' {
+                row_range = calculate_correct_half(row_range, Operation::TakeUpperHalf);
             }
         } else {
-            // Once this block executes, the row has been found
-            assert_eq!(lower_row, higher_row, "Rows are not equal: lower {} != higher {}", lower_row, higher_row);
+            // Once this block executes, the row must be known
+            assert_eq!(row_range.is_complete(), true, "Rows are not equal: lower {} != higher {}", row_range.lower, row_range.higher);
 
-            // Find correct seat
-            let difference: f64 = higher_seat as f64 - lower_seat as f64;
-            let half = (difference / 2.0).ceil() as u8;
-
-            // Find correct row
+            // Find the seat in the row
             if character == 'L' {
-                // Take lower half
-                higher_seat -= half;
+                seat_range = calculate_correct_half(seat_range, Operation::TakeLowerHalf);
             } else {
                 // Take upper half
-                lower_seat += half;
+                seat_range = calculate_correct_half(seat_range, Operation::TakeUpperHalf);
             }
         }
     }
 
-    // Rows and columns have been found
-    assert_eq!(lower_seat, higher_seat, "Seats are not equal: lower {} != higher {}", lower_seat, higher_seat);
+    // Once this executes, the seat must be known
+    assert_eq!(seat_range.is_complete(), true, "Seats are not equal: lower {} != higher {}", seat_range.lower, seat_range.higher);
 
     // Calculate seat ID
-    lower_row as u32 * 8 + lower_seat as u32
+    row_range.lower as u32 * 8 + seat_range.lower as u32
 }
 
 impl PuzzleTrait for Day05 {
