@@ -8,13 +8,13 @@ struct ParsedInput {
     index_two: usize
 }
 
-pub struct DayTwo {
+pub struct Day02 {
     input: Vec<String>
 }
 
-impl DayTwo {
-    pub fn new() -> DayTwo {
-        DayTwo { input: Vec::new() }
+impl Day02 {
+    pub fn new() -> Day02 {
+        Day02 { input: Vec::new() }
     }
 
     fn parse(&self, input: &str) -> ParsedInput {
@@ -37,7 +37,7 @@ impl DayTwo {
     }
 }
 
-impl PuzzleTrait for DayTwo {
+impl PuzzleTrait for Day02 {
     fn print_info(&self) {
         println!("DAY 2 - PASSWORD PHILOSOPHY")
     }

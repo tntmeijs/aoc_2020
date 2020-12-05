@@ -140,17 +140,17 @@ impl Passport {
     }
 }
 
-pub struct DayFour {
+pub struct Day04 {
     parsed_passports: Vec<Passport>
 }
 
-impl DayFour {
-    pub fn new() -> DayFour {
-        DayFour { parsed_passports: Vec::new() }
+impl Day04 {
+    pub fn new() -> Day04 {
+        Day04 { parsed_passports: Vec::new() }
     }
 }
 
-impl PuzzleTrait for DayFour {
+impl PuzzleTrait for Day04 {
     fn print_info(&self) {
         println!("DAY 4 - PASSPORT PROCESSING")
     }

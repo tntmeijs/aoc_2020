@@ -1,17 +1,17 @@
 use shared::input::read_input_as_vec;
 use shared::puzzle_trait::PuzzleTrait;
 
-pub struct DayOne {
+pub struct Day01 {
     input: Vec<String>
 }
 
-impl DayOne {
-    pub fn new() -> DayOne {
-        DayOne { input: Vec::new() }
+impl Day01 {
+    pub fn new() -> Day01 {
+        Day01 { input: Vec::new() }
     }
 }
 
-impl PuzzleTrait for DayOne {
+impl PuzzleTrait for Day01 {
     fn print_info(&self) {
         println!("DAY 1 - REPORT REPAIR");
     }

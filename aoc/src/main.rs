@@ -1,15 +1,15 @@
-use day_01::solution::DayOne;
-use day_02::solution::DayTwo;
-use day_03::solution::DayThree;
-use day_04::solution::DayFour;
+use day_01::solution::Day01;
+use day_02::solution::Day02;
+use day_03::solution::Day03;
+use day_04::solution::Day04;
 use shared::puzzle_trait::PuzzleTrait;
 
 // #TODO: Since these objects all implement PuzzleTrait we can put them in a Vec<PuzzleTrait>
 fn main() {
-    let mut day_1 = DayOne::new();
-    let mut day_2 = DayTwo::new();
-    let mut day_3 = DayThree::new();
-    let mut day_4 = DayFour::new();
+    let mut day_1 = Day01::new();
+    let mut day_2 = Day02::new();
+    let mut day_3 = Day03::new();
+    let mut day_4 = Day04::new();
 
     day_1.print_info();
     day_1.gather_input();

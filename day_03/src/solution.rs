@@ -13,13 +13,13 @@ impl InputData {
     }
 }
 
-pub struct DayThree {
+pub struct Day03 {
     input: InputData
 }
 
-impl DayThree {
-    pub fn new() -> DayThree {
-        DayThree { input: InputData::new() }
+impl Day03 {
+    pub fn new() -> Day03 {
+        Day03 { input: InputData::new() }
     }
 }
 
@@ -45,7 +45,7 @@ fn traverse_slope(right: usize, down: usize, input: &InputData) -> u64 {
     tree_count
 }
 
-impl PuzzleTrait for DayThree {
+impl PuzzleTrait for Day03 {
     fn print_info(&self) {
         println!("DAY 3 - TOBOGGAN TRAJECTORY")
     }
