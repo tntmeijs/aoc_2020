@@ -1,5 +1,5 @@
-use shared::file_io::input::read_input_as_vec;
-use shared::traits::puzzle_trait::PuzzleTrait;
+use shared::input::read_input_as_vec;
+use shared::puzzle_trait::PuzzleTrait;
 
 struct ParsedInput {
     password: String,
@@ -43,7 +43,7 @@ impl PuzzleTrait for DayTwo {
     }
 
     fn gather_input(&mut self) {
-        self.input = read_input_as_vec("./input/day_two.txt");
+        self.input = read_input_as_vec("./input/day_02.txt");
     }
 
     // Part one: find how many passwords are valid according to the rules

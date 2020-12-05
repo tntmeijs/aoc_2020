@@ -1,5 +1,5 @@
-use shared::file_io::input::read_input_as_vec;
-use shared::traits::puzzle_trait::PuzzleTrait;
+use shared::input::read_input_as_vec;
+use shared::puzzle_trait::PuzzleTrait;
 
 #[derive(Debug)]
 struct Passport {
@@ -156,7 +156,7 @@ impl PuzzleTrait for DayFour {
     }
 
     fn gather_input(&mut self) {
-        let raw_input = read_input_as_vec("./input/day_four.txt");
+        let raw_input = read_input_as_vec("./input/day_04.txt");
 
         let mut found_birth_year        = "".to_string();
         let mut found_issue_year        = "".to_string();

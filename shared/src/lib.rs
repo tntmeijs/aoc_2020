@@ -1,2 +1,2 @@
-pub mod file_io;
-pub mod traits;
+pub mod input;
+pub mod puzzle_trait;

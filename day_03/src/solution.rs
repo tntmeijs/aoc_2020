@@ -1,5 +1,5 @@
-use shared::file_io::input::read_input_as_vec;
-use shared::traits::puzzle_trait::PuzzleTrait;
+use shared::input::read_input_as_vec;
+use shared::puzzle_trait::PuzzleTrait;
 
 struct InputData {
     slope_length: usize,
@@ -51,7 +51,7 @@ impl PuzzleTrait for DayThree {
     }
 
     fn gather_input(&mut self) {
-        let raw_input = read_input_as_vec("./input/day_three.txt");
+        let raw_input = read_input_as_vec("./input/day_03.txt");
         self.input.slope_length = raw_input.len() - 1;
         self.input.slope_width = raw_input[0].len();
         self.input.slope_rows = raw_input;

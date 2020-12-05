@@ -1,8 +1,8 @@
-use day_one::solution::logic::DayOne;
-use day_two::solution::logic::DayTwo;
-use day_three::solution::logic::DayThree;
-use day_four::solution::logic::DayFour;
-use shared::traits::puzzle_trait::PuzzleTrait;
+use day_01::solution::DayOne;
+use day_02::solution::DayTwo;
+use day_03::solution::DayThree;
+use day_04::solution::DayFour;
+use shared::puzzle_trait::PuzzleTrait;
 
 // #TODO: Since these objects all implement PuzzleTrait we can put them in a Vec<PuzzleTrait>
 fn main() {

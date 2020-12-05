@@ -1,5 +1,5 @@
-use shared::file_io::input::read_input_as_vec;
-use shared::traits::puzzle_trait::PuzzleTrait;
+use shared::input::read_input_as_vec;
+use shared::puzzle_trait::PuzzleTrait;
 
 pub struct DayOne {
     input: Vec<String>
@@ -17,7 +17,7 @@ impl PuzzleTrait for DayOne {
     }
 
     fn gather_input(&mut self) {
-        self.input = read_input_as_vec("./input/day_one.txt");
+        self.input = read_input_as_vec("./input/day_01.txt");
     }
 
     // Part one: in the input list, find two entries that sum to 2020 and multiply them
