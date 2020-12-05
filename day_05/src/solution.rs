@@ -82,7 +82,26 @@ impl PuzzleTrait for Day05 {
         println!("Answer part one: {} is the highest seat ID", highest_seat_id);
     }
 
-    // Part two: ___
+    // Part two: find which seat ID is missing in the sequence
     fn solve_part_two(&self) {
+        let mut all_seat_ids: Vec<u32> = Vec::new();
+
+        for boarding_pass in &self.input {
+            all_seat_ids.push(get_seat_id_from_boarding_pass(boarding_pass));
+        }
+
+        // Sort ascending to make it possible to find irregularities in the sequence
+        all_seat_ids.sort();
+
+        // Find missing ID
+        let mut previous_id = all_seat_ids[0];
+        for id in &all_seat_ids {
+            if id - previous_id > 1 {
+                // The seat between these two seats is my seat
+                println!("Answer part two: {} my seat ID", id - 1);
+            }
+
+            previous_id = *id;
+        }
     }
 }
