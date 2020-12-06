@@ -1,6 +1,8 @@
 use shared::input::read_input_as_vec;
 use shared::puzzle_trait::PuzzleTrait;
 
+use std::collections::HashSet;
+
 pub struct Day06 {
     input: Vec<String>
 }
@@ -22,9 +24,25 @@ impl PuzzleTrait for Day06 {
 
     // Part one: how many people answered unique questions
     fn solve_part_one(&self) {
-        let mut question_count = 0;
+        let mut unique_answers_total = 0;
+        let mut unique_group_answers: HashSet<char> = HashSet::new();
 
-        println!("Answer part one: {} is the sum of the number of questions people answered with \"yes\"", question_count);
+        for (index, line) in self.input.iter().enumerate() {
+            // Check answers
+            for answer in line.chars() {
+                unique_group_answers.insert(answer);
+            }
+
+            // End of a group
+            if line.trim().len() == 0 || index == self.input.len() - 1 {
+                println!("group total: {}", unique_group_answers.len());
+
+                unique_answers_total += unique_group_answers.len();
+                unique_group_answers.clear();
+            }
+        }
+
+        println!("Answer part one: {} is the sum of the number of questions people answered with \"yes\"", unique_answers_total);
     }
 
     // Part two: ___
