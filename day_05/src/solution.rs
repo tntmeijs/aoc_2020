@@ -21,7 +21,7 @@ fn get_seat_id_from_boarding_pass(boarding_pass: &str) -> u32 {
         if character == 'B' { row |= 1 << (6 - (index % 8)) }
     }
 
-    // Calculate column
+    // Calculate seat
     for (index, character) in boarding_pass[7..10].chars().enumerate() {
         if character == 'R' { seat |= 1 << (2 - index) }
     }
