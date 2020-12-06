@@ -35,8 +35,6 @@ impl PuzzleTrait for Day06 {
 
             // End of a group
             if line.trim().len() == 0 || index == self.input.len() - 1 {
-                println!("group total: {}", unique_group_answers.len());
-
                 unique_answers_total += unique_group_answers.len();
                 unique_group_answers.clear();
             }
