@@ -13,23 +13,18 @@ impl Day05 {
 
 // Returns the seat ID from the boarding pass
 fn get_seat_id_from_boarding_pass(boarding_pass: &str) -> u32 {
-    let mut binary_row_str = "".to_string();
-    let mut binary_seat_str = "".to_string();
+    let mut row = 0u8;
+    let mut seat = 0u8;
 
-    for character in boarding_pass.chars() {
-        if character == 'F' {
-            binary_row_str += "0";
-        } else if character == 'B' {
-            binary_row_str += "1";
-        } else if character == 'L' {
-            binary_seat_str += "0";
-        } else if character == 'R' {
-            binary_seat_str += "1";
-        }
+    // Calculate row
+    for (index, character) in boarding_pass[0..7].chars().enumerate() {
+        if character == 'B' { row |= 1 << (6 - (index % 8)) }
     }
 
-    let row = u8::from_str_radix(&binary_row_str, 2).unwrap();
-    let seat = u8::from_str_radix(&binary_seat_str, 2).unwrap();
+    // Calculate column
+    for (index, character) in boarding_pass[7..10].chars().enumerate() {
+        if character == 'R' { seat |= 1 << (2 - index) }
+    }
 
     // Calculate seat ID
     row as u32 * 8 + seat as u32
