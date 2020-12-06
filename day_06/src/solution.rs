@@ -54,19 +54,19 @@ impl PuzzleTrait for Day06 {
             // Save this group's answers
             if line.trim().len() > 0 {
                 number_people_in_group += 1;
-            }
 
-            for answer in line.chars() {
-                let occurances = group_answers.entry(answer).or_insert(0);
-                *occurances += 1;
+                for answer in line.chars() {
+                    // Keep track of how many times a question has been answered by members of the group
+                    let responses = group_answers.entry(answer).or_insert(0);
+                    *responses += 1;
+                }
             }
 
             // End of a group
             if line.trim().len() == 0 || index == self.input.len() - 1 {
-                println!("{:?} - in group: {}", group_answers, number_people_in_group);
-
-                for (key, value) in &group_answers {
-                    if *value == number_people_in_group {
+                for responses in group_answers.values() {
+                    // Everyone in the group answered this question
+                    if *responses == number_people_in_group {
                         number_same_answers += 1;
                     }
                 }
