@@ -25,7 +25,7 @@ impl PuzzleTrait for Day06 {
     // Part one: how many people answered unique questions
     fn solve_part_one(&self) {
         let mut unique_answers_total = 0;
-        let mut unique_group_answers: HashSet<char> = HashSet::new();
+        let mut unique_group_answers = HashSet::new();
 
         for (index, line) in self.input.iter().enumerate() {
             // Check answers
