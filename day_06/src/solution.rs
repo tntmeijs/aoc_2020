@@ -23,7 +23,7 @@ impl PuzzleTrait for Day06 {
         self.input = read_input_as_vec("./input/day_06.txt");
     }
 
-    // Part one: how many people answered unique questions
+    // Part one: how many people per group answered a question that has not answered by anyone else in their group yet
     fn solve_part_one(&self) {
         let mut unique_answers_total = 0;
         let mut unique_group_answers = HashSet::new();
@@ -44,7 +44,7 @@ impl PuzzleTrait for Day06 {
         println!("Answer part one: {} is the sum of the number of questions people answered with \"yes\"", unique_answers_total);
     }
 
-    // Part two: to which question did everyone in a group answer "yes"
+    // Part two: find how many times people in a group all answered "yes" to the same question
     fn solve_part_two(&self) {
         let mut number_people_in_group = 0;
         let mut number_same_answers = 0;
