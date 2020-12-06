@@ -11,70 +11,28 @@ impl Day05 {
     }
 }
 
-enum Operation {
-    TakeLowerHalf,
-    TakeUpperHalf
-}
-
-struct LowHighRange {
-    lower: u8,
-    higher: u8
-}
-
-impl LowHighRange {
-    // Check if the range has been narrowed down to a single value
-    fn is_complete(&self) -> bool {
-        self.lower == self.higher
-    }
-}
-
-// Split the range either into the upper half, or into the lower half
-fn calculate_correct_half(values: LowHighRange, operation: Operation) -> LowHighRange {
-    let difference = values.higher as f64 - values.lower as f64;
-    let half = (difference / 2.0).ceil() as u8;
-
-    let mut result = LowHighRange { lower: values.lower, higher: values.higher };
-
-    match operation {
-        Operation::TakeLowerHalf => result.higher -= half,
-        Operation::TakeUpperHalf => result.lower += half
-    }
-
-    result
-}
-
 // Returns the seat ID from the boarding pass
 fn get_seat_id_from_boarding_pass(boarding_pass: &str) -> u32 {
-    let mut row_range = LowHighRange { lower: 0, higher: 127 };
-    let mut seat_range = LowHighRange { lower: 0, higher: 7 };
+    let mut binary_row_str = "".to_string();
+    let mut binary_seat_str = "".to_string();
 
     for character in boarding_pass.chars() {
-        if character != 'L' && character != 'R' {
-            // Find the row that contains the seat
-            if character == 'F' {
-                row_range = calculate_correct_half(row_range, Operation::TakeLowerHalf);
-            } else if character == 'B' {
-                row_range = calculate_correct_half(row_range, Operation::TakeUpperHalf);
-            }
-        } else {
-            // Once this block executes, the row must be known
-            assert_eq!(row_range.is_complete(), true, "Rows are not equal: lower {} != higher {}", row_range.lower, row_range.higher);
-
-            // Find the seat in the row
-            if character == 'L' {
-                seat_range = calculate_correct_half(seat_range, Operation::TakeLowerHalf);
-            } else {
-                // Take upper half
-                seat_range = calculate_correct_half(seat_range, Operation::TakeUpperHalf);
-            }
+        if character == 'F' {
+            binary_row_str += "0";
+        } else if character == 'B' {
+            binary_row_str += "1";
+        } else if character == 'L' {
+            binary_seat_str += "0";
+        } else if character == 'R' {
+            binary_seat_str += "1";
         }
     }
 
-    // Once this executes, the seat must be known
-    assert_eq!(seat_range.is_complete(), true, "Seats are not equal: lower {} != higher {}", seat_range.lower, seat_range.higher);
+    let row = u8::from_str_radix(&binary_row_str, 2).unwrap();
+    let seat = u8::from_str_radix(&binary_seat_str, 2).unwrap();
 
     // Calculate seat ID
-    row_range.lower as u32 * 8 + seat_range.lower as u32
+    row as u32 * 8 + seat as u32
 }
 
 impl PuzzleTrait for Day05 {
