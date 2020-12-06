@@ -1,6 +1,7 @@
 use shared::input::read_input_as_vec;
 use shared::puzzle_trait::PuzzleTrait;
 
+use std::collections::HashMap;
 use std::collections::HashSet;
 
 pub struct Day06 {
@@ -43,7 +44,38 @@ impl PuzzleTrait for Day06 {
         println!("Answer part one: {} is the sum of the number of questions people answered with \"yes\"", unique_answers_total);
     }
 
-    // Part two: ___
+    // Part two: to which question did everyone in a group answer "yes"
     fn solve_part_two(&self) {
+        let mut number_people_in_group = 0;
+        let mut number_same_answers = 0;
+        let mut group_answers = HashMap::new();
+
+        for (index, line) in self.input.iter().enumerate() {
+            // Save this group's answers
+            if line.trim().len() > 0 {
+                number_people_in_group += 1;
+            }
+
+            for answer in line.chars() {
+                let occurances = group_answers.entry(answer).or_insert(0);
+                *occurances += 1;
+            }
+
+            // End of a group
+            if line.trim().len() == 0 || index == self.input.len() - 1 {
+                println!("{:?} - in group: {}", group_answers, number_people_in_group);
+
+                for (key, value) in &group_answers {
+                    if *value == number_people_in_group {
+                        number_same_answers += 1;
+                    }
+                }
+
+                number_people_in_group = 0;
+                group_answers.clear();
+            }
+        }
+
+        println!("Answer part two: {} is the sum of the number of questions everyone in a group answered with \"yes\"", number_same_answers);
     }
 }
