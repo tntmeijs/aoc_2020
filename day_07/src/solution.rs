@@ -1,25 +1,33 @@
 use shared::input::read_input_as_vec;
 use shared::puzzle_trait::PuzzleTrait;
 
+#[derive(Clone)]
 struct Bag {
     color: String,
-    bags: Option<Vec<Bag>>
+    bags: Vec<Bag>
 }
 
 impl Bag {
     pub fn new() -> Bag {
-        Bag { color: "".to_string(), bags: None }
+        Bag { color: "".to_string(), bags: Vec::new() }
     }
 }
 
 pub struct Day07 {
-    bag_tree: Bag
+    bag_tree: Vec<Bag>
 }
 
 impl Day07 {
     pub fn new() -> Day07 {
-        Day07 { bag_tree: Bag::new() }
+        Day07 { bag_tree: Vec::new() }
     }
+}
+
+fn pretty_print_tree(root: &Bag, depth: usize) {
+    let mut root_line = " ".repeat(depth);
+    root_line += &root.color;
+
+    println!("{}", root.color);
 }
 
 impl PuzzleTrait for Day07 {
@@ -48,7 +56,13 @@ impl PuzzleTrait for Day07 {
                 .map(|bag| bag.trim().to_string())  // Remove whitespace
                 .collect::<Vec<String>>();          // Collect as a copy of the string
 
+            let mut child_bags = Vec::new();
+
             for child_desc in &children {
+                if child_desc.starts_with("no other") {
+                    break;
+                }
+
                 // The number of children is always a single character
                 let count = child_desc
                     .chars()        // Iterate over characters
@@ -59,11 +73,37 @@ impl PuzzleTrait for Day07 {
 
                 // Now that the number has been extracted, the first two characters (number and a space) can be removed
                 let color = child_desc[2..].to_string();
-                
-                println!("{}, {}", count, color);
+
+                // Add all child bags to the container
+                for _index in 0..count {
+                    child_bags.push(Bag { color: color.to_string(), bags: Vec::new() });
+                }
             }
 
-            println!("Root bag found: {}", root_bag_color);
+            // Attempt to copy the data to the tree
+            let mut copied_once = false;
+            for root_index in 0..self.bag_tree.len() {
+                let root = &mut self.bag_tree[root_index];
+                for bag_index in 0..root.bags.len() {
+                    let bag = &mut root.bags[bag_index];
+
+                    // Bag exists, clone this data to the bag to form a tree-like structure
+                    if bag.color == root_bag_color {
+                        bag.bags = child_bags.clone();
+                        copied_once = true;
+                    }
+                }
+            }
+
+            // None of the existing entries contain this bag, treat it as a new root bag
+            if !copied_once {
+                self.bag_tree.push(Bag { color: root_bag_color, bags: child_bags });
+            }
+        }
+
+        // Pretty-print
+        for root in &self.bag_tree {
+            pretty_print_tree(root, 0);
         }
     }
 
