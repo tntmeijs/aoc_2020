@@ -63,12 +63,10 @@ impl PuzzleTrait for Day08 {
                 break;
             }
         }
-
-        println!("Answer part one: {}", -1);
     }
 
     // Part two: ___
     fn solve_part_two(&self) {
-            println!("Answer part two: {}", -1);
+        println!("Answer part two: {}", -1);
     }
 }
