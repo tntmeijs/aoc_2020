@@ -1,15 +1,13 @@
 use shared::input::read_input_as_vec;
 use shared::puzzle_trait::PuzzleTrait;
 
-// use std::collections::VecDeque;
-
-use super::tree;
-
+#[allow(dead_code)]
 struct Bag {
     color: String,
     bags: Vec<Bag>
 }
 
+#[allow(dead_code)]
 fn get_next_bag (input: &Vec<String>, line: usize) -> Bag {
     // Split bag name from child names
     let parts = input[line].split("contain").collect::<Vec<&str>>();
@@ -40,6 +38,7 @@ fn get_next_bag (input: &Vec<String>, line: usize) -> Bag {
     Bag { color: bag_color, bags: child_bags }
 }
 
+#[allow(dead_code)]
 pub struct Day07 {
     input: Vec<String>,
     current_line: usize,

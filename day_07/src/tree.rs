@@ -7,6 +7,7 @@ mod tree {
         children: Vec<TreeNode>
     }
 
+    #[allow(dead_code)]
     fn try_insert(root: &mut TreeNode, new_node: &TreeNode) -> bool {
         let mut queue: VecDeque<&mut TreeNode> = VecDeque::new();
         queue.push_back(root);
@@ -21,6 +22,7 @@ mod tree {
             if node.name == new_node.name {
                 let children_copy = new_node.children.clone();
 
+                #[allow(unused_variables)]
                 for copy in children_copy {
                     // Somehow stop the borrow checker from complaining...
                 }
