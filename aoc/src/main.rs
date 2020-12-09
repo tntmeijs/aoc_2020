@@ -6,6 +6,7 @@ use day_05::solution::Day05;
 use day_06::solution::Day06;
 use day_07::solution::Day07;
 use day_08::solution::Day08;
+use day_09::solution::Day09;
 
 use shared::puzzle_trait::PuzzleTrait;
 
@@ -22,6 +23,7 @@ fn main() {
     puzzles.push(Box::new(Day06::new()));
     puzzles.push(Box::new(Day07::new()));
     puzzles.push(Box::new(Day08::new()));
+    puzzles.push(Box::new(Day09::new()));
 
     // Run all puzzles
     let puzzle_count = puzzles.len();
