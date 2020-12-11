@@ -183,6 +183,6 @@ impl PuzzleTrait for Day11 {
             }
         }
 
-        println!("Answer part two: {}", occupied_seats);
+        println!("Answer part two: {} seats end up being occupied", occupied_seats);
     }
 }
