@@ -1,6 +1,6 @@
 // All states a single cell in the grid can have
 #[derive(PartialEq, Clone)]
-pub enum CellState {
+pub enum SeatState {
     Invalid,
     Floor,
     Occupied,
@@ -8,7 +8,7 @@ pub enum CellState {
 }
 
 // All possible locations that can surround a cell
-pub enum CellNeighbour {
+pub enum GridNeighbour {
     Top,
     Bottom,
     Left,
@@ -19,13 +19,13 @@ pub enum CellNeighbour {
     BottomRight
 }
 
-impl CellState {
-    pub fn from_char(c: char) -> CellState {
+impl SeatState {
+    pub fn from_char(c: char) -> SeatState {
         match c {
-            '.' => CellState::Floor,
-            'L' => CellState::Available,
-            '#' => CellState::Occupied,
-            _ => CellState::Invalid
+            '.' => SeatState::Floor,
+            'L' => SeatState::Available,
+            '#' => SeatState::Occupied,
+            _ => SeatState::Invalid
         }
     }
 }
@@ -35,7 +35,7 @@ impl CellState {
 pub struct Grid {
     rows: usize,
     columns: usize,
-    data: Vec<Vec<CellState>>
+    data: Vec<Vec<SeatState>>
 }
 
 impl Grid {
@@ -51,7 +51,7 @@ impl Grid {
             let mut row_data = Vec::new();
 
             for _column in 0..columns {
-                row_data.push(CellState::Floor);
+                row_data.push(SeatState::Floor);
             }
 
             data.push(row_data);
@@ -97,7 +97,7 @@ impl Grid {
     }
 
     // Update the state of a cell
-    pub fn set_cell(&mut self, row: usize, column: usize, state: CellState) {
+    pub fn set_seat(&mut self, row: usize, column: usize, state: SeatState) {
         if row > self.rows || column > self.columns {
             panic!("Cell ({}, {}) is out of bounds", row, column);
         }
@@ -106,7 +106,7 @@ impl Grid {
     }
 
     // Get the state of a cell
-    pub fn get_cell_state(&self, row: usize, column: usize) -> CellState {
+    pub fn get_cell_state(&self, row: usize, column: usize) -> SeatState {
         if row > self.rows || column > self.columns {
             panic!("Cell ({}, {}) is out of bounds", row, column);
         }
@@ -114,11 +114,20 @@ impl Grid {
         self.data[row][column].clone()
     }
 
+    // Check if the cell is set to the specified state
+    pub fn cell_equals(&self, row: usize, column: usize, state: SeatState) -> bool {
+        if row > self.rows || column > self.columns {
+            panic!("Cell ({}, {}) is out of bounds", row, column);
+        }
+
+        self.data[row][column] == state
+    }
+
     // Check if any cells are invalid
     pub fn is_valid(&self) -> bool {
         for row in 0..self.rows {
             for column in 0..self.columns {
-                if self.data[row][column] == CellState::Invalid {
+                if self.data[row][column] == SeatState::Invalid {
                     return false;
                 }
             }
@@ -129,19 +138,49 @@ impl Grid {
     }
 
     // Get the state of one of the eight potential neighbouring cells
-    pub fn get_neightbour_state(&self, row: usize, column: usize, neighbour: CellNeighbour) -> CellState {
+    pub fn get_neightbour_state(&self, row: usize, column: usize, neighbour: GridNeighbour) -> SeatState {
         let max_rows = self.rows - 1;
         let max_columns = self.columns - 1;
 
         match neighbour {
-            CellNeighbour::Top =>          { if row == 0                                    { CellState::Invalid } else { self.data[row - 1][column].clone() } },
-            CellNeighbour::Bottom =>       { if row >= max_rows                             { CellState::Invalid } else { self.data[row + 1][column].clone() } },
-            CellNeighbour::Left =>         { if column == 0                                 { CellState::Invalid } else { self.data[row][column - 1].clone() } },
-            CellNeighbour::Right =>        { if column >= max_columns                       { CellState::Invalid } else { self.data[row][column + 1].clone() } },
-            CellNeighbour::TopLeft =>      { if row == 0 || column == 0                     { CellState::Invalid } else { self.data[row - 1][column - 1].clone() } },
-            CellNeighbour::TopRight =>     { if row == 0 || column >= max_columns           { CellState::Invalid } else { self.data[row - 1][column + 1].clone() } },
-            CellNeighbour::BottomLeft =>   { if row >= max_rows || column == 0              { CellState::Invalid } else { self.data[row + 1][column - 1].clone() } },
-            CellNeighbour::BottomRight =>  { if row >= max_rows || column >= max_columns    { CellState::Invalid } else { self.data[row + 1][column + 1].clone() } }
+            GridNeighbour::Top =>          { if row == 0                                    { SeatState::Invalid } else { self.data[row - 1][column].clone() } },
+            GridNeighbour::Bottom =>       { if row >= max_rows                             { SeatState::Invalid } else { self.data[row + 1][column].clone() } },
+            GridNeighbour::Left =>         { if column == 0                                 { SeatState::Invalid } else { self.data[row][column - 1].clone() } },
+            GridNeighbour::Right =>        { if column >= max_columns                       { SeatState::Invalid } else { self.data[row][column + 1].clone() } },
+            GridNeighbour::TopLeft =>      { if row == 0 || column == 0                     { SeatState::Invalid } else { self.data[row - 1][column - 1].clone() } },
+            GridNeighbour::TopRight =>     { if row == 0 || column >= max_columns           { SeatState::Invalid } else { self.data[row - 1][column + 1].clone() } },
+            GridNeighbour::BottomLeft =>   { if row >= max_rows || column == 0              { SeatState::Invalid } else { self.data[row + 1][column - 1].clone() } },
+            GridNeighbour::BottomRight =>  { if row >= max_rows || column >= max_columns    { SeatState::Invalid } else { self.data[row + 1][column + 1].clone() } }
         }
+    }
+
+    // Cast an imaginary ray across the grid to check which seat is visible
+    // The closest seat is returned
+    pub fn get_visible_seat(&self, row: usize, column: usize, delta_row: i32, delta_column: i32) -> SeatState {
+        let max_rows = self.rows - 1;
+        let max_columns = self.columns - 1;
+
+        let mut current_row = row as i32;
+        let mut current_column = column as i32;
+
+        loop {
+            // Check the next cells
+            current_row += delta_row;
+            current_column += delta_column;
+
+            // Reached the edge of the grid
+            if current_row < 0 || current_row > max_rows as i32 || current_column < 0 || current_column > max_columns as i32 {
+                break;
+            }
+
+            // Look for available or occupied seats
+            let seat = &self.data[current_row as usize][current_column as usize];
+            if *seat == SeatState::Occupied || *seat == SeatState::Available {
+                return seat.clone();
+            }
+        }
+
+        // Unable to find a seat
+        SeatState::Invalid
     }
 }
