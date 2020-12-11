@@ -39,18 +39,18 @@ impl Grid {
     }
 
     // Number of rows in the grid
-    fn row_count(&self) -> usize {
+    pub fn row_count(&self) -> usize {
         self.rows
     }
 
     // Number of columns in the grid
-    fn column_count(&self) -> usize {
+    pub fn column_count(&self) -> usize {
         self.columns
     }
 
     // Try to update the value of a cell
     // Returns true if the cell was found, false otherwise
-    fn try_set_cell(&mut self, row: usize, column: usize, state: CellState) -> bool {
+    pub fn try_set_cell(&mut self, row: usize, column: usize, state: CellState) -> bool {
         if row > self.row_count() || column > self.column_count() {
             return false;
         }
@@ -60,7 +60,7 @@ impl Grid {
     }
 
     // Check if the cell is set to the specified state
-    fn cell_equals(&self, row: usize, column: usize, state: CellState) -> bool {
+    pub fn cell_equals(&self, row: usize, column: usize, state: CellState) -> bool {
         if row > self.row_count() || column > self.column_count() {
             return false;
         }
