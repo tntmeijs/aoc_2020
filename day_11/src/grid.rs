@@ -1,6 +1,6 @@
 // All states a single cell in the grid can have
 #[derive(PartialEq)]
-enum CellState {
+pub enum CellState {
     Floor,
     Occupied,
     Available
