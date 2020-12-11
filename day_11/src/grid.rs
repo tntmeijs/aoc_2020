@@ -1,10 +1,22 @@
 // All states a single cell in the grid can have
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone)]
 pub enum CellState {
     Invalid,
     Floor,
     Occupied,
     Available
+}
+
+// All possible locations that can surround a cell
+pub enum CellNeighbour {
+    Top,
+    Bottom,
+    Left,
+    Right,
+    TopLeft,
+    TopRight,
+    BottomLeft,
+    BottomRight
 }
 
 impl CellState {
@@ -19,6 +31,7 @@ impl CellState {
 }
 
 // Grid of cells
+#[derive(Clone)]
 pub struct Grid {
     rows: usize,
     columns: usize,
@@ -34,10 +47,10 @@ impl Grid {
 
         let mut data = Vec::new();
 
-        for row in 0..rows {
+        for _row in 0..rows {
             let mut row_data = Vec::new();
 
-            for column in 0..columns {
+            for _column in 0..columns {
                 row_data.push(CellState::Floor);
             }
 
@@ -51,7 +64,7 @@ impl Grid {
     }
 
     // Check if two grids are equal in size and data
-    pub fn are_equal(a: Grid, b: Grid) -> bool {
+    pub fn are_equal(a: &Grid, b: &Grid) -> bool {
         // Different dimensions
         if a.rows != b.rows || a.columns != b.columns {
             return false;
@@ -83,24 +96,22 @@ impl Grid {
         self.columns
     }
 
-    // Try to update the value of a cell
-    // Returns true if the cell was found, false otherwise
-    pub fn try_set_cell(&mut self, row: usize, column: usize, state: CellState) -> bool {
+    // Update the state of a cell
+    pub fn set_cell(&mut self, row: usize, column: usize, state: CellState) {
         if row > self.rows || column > self.columns {
-            return false;
+            panic!("Cell ({}, {}) is out of bounds", row, column);
         }
 
         self.data[row][column] = state;
-        true
     }
 
-    // Check if the cell is set to the specified state
-    pub fn cell_equals(&self, row: usize, column: usize, state: CellState) -> bool {
+    // Get the state of a cell
+    pub fn get_cell_state(&self, row: usize, column: usize) -> CellState {
         if row > self.rows || column > self.columns {
-            return false;
+            panic!("Cell ({}, {}) is out of bounds", row, column);
         }
 
-        self.data[row][column] == state
+        self.data[row][column].clone()
     }
 
     // Check if any cells are invalid
@@ -115,5 +126,22 @@ impl Grid {
 
         // No invalid cells found
         true
+    }
+
+    // Get the state of one of the eight potential neighbouring cells
+    pub fn get_neightbour_state(&self, row: usize, column: usize, neighbour: CellNeighbour) -> CellState {
+        let max_rows = self.rows - 1;
+        let max_columns = self.columns - 1;
+
+        match neighbour {
+            CellNeighbour::Top =>          { if row == 0                                    { CellState::Invalid } else { self.data[row - 1][column].clone() } },
+            CellNeighbour::Bottom =>       { if row >= max_rows                             { CellState::Invalid } else { self.data[row + 1][column].clone() } },
+            CellNeighbour::Left =>         { if column == 0                                 { CellState::Invalid } else { self.data[row][column - 1].clone() } },
+            CellNeighbour::Right =>        { if column >= max_columns                       { CellState::Invalid } else { self.data[row][column + 1].clone() } },
+            CellNeighbour::TopLeft =>      { if row == 0 || column == 0                     { CellState::Invalid } else { self.data[row - 1][column - 1].clone() } },
+            CellNeighbour::TopRight =>     { if row == 0 || column >= max_columns           { CellState::Invalid } else { self.data[row - 1][column + 1].clone() } },
+            CellNeighbour::BottomLeft =>   { if row >= max_rows || column == 0              { CellState::Invalid } else { self.data[row + 1][column - 1].clone() } },
+            CellNeighbour::BottomRight =>  { if row >= max_rows || column >= max_columns    { CellState::Invalid } else { self.data[row + 1][column + 1].clone() } }
+        }
     }
 }
