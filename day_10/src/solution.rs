@@ -54,43 +54,43 @@ impl PuzzleTrait for Day10 {
 
     // Part two: what is the total number of distinct ways you can arrange the adapters to connect the charging outlet to your device?
     fn solve_part_two(&self) {
-        let mut possible_paths = BTreeMap::new();
+        // let mut possible_paths = BTreeMap::new();
         
-        // Every adapter starts at zero possible ways to reach it (initial state)
-        for adapter in &self.input {
-            possible_paths.insert(adapter, 0);
-        }
+        // // Every adapter starts at zero possible ways to reach it (initial state)
+        // for adapter in &self.input {
+        //     possible_paths.insert(adapter, 0);
+        // }
 
-        // For each adapter, check how many adapters with a joltange of +1 to +3 exist
-        for i in 0..self.input.len() {
-            let mut difference = 0;
-            let mut path_count = 0;
-            let mut next_index = i + 1;
-            let mut previous = self.input[i];
+        // // For each adapter, check how many adapters with a joltange of +1 to +3 exist
+        // for i in 0..self.input.len() {
+        //     let mut difference = 0;
+        //     let mut path_count = 0;
+        //     let mut next_index = i + 1;
+        //     let mut previous = self.input[i];
 
-            // Keep looking for adapters with a joltage difference between +1 and +3
-            while difference <= 3 && next_index < self.input.len() - 1 {
-                path_count += 1;
+        //     // Keep looking for adapters with a joltage difference between +1 and +3
+        //     while difference <= 3 && next_index < self.input.len() - 1 {
+        //         path_count += 1;
 
-                let next = self.input[next_index];
-                difference = next - previous;
-                previous = next;
+        //         let next = self.input[next_index];
+        //         difference = next - previous;
+        //         previous = next;
                 
-                next_index += 1;
-            }
+        //         next_index += 1;
+        //     }
 
-            // Save how many paths are available
-            possible_paths.insert(&self.input[i], path_count);
-        }
+        //     // Save how many paths are available
+        //     possible_paths.insert(&self.input[i], path_count);
+        // }
 
-        // Calculate the total number of combinations by multiplying all paths
-        let all_paths = possible_paths.keys().copied().collect::<Vec<_>>();
-        let mut answer = *all_paths[0] as u128;
+        // // Calculate the total number of combinations by multiplying all paths
+        // let all_paths = possible_paths.keys().copied().collect::<Vec<_>>();
+        // let mut answer = *all_paths[0] as u128;
 
-        for i in 1..all_paths.len() {
-            answer *= *all_paths[i] as u128;
-        }
+        // for i in 1..all_paths.len() {
+        //     answer *= *all_paths[i] as u128;
+        // }
 
-        println!("Answer part two: {}", answer);
+        println!("Answer part two: {}", -1);
     }
 }
