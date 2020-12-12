@@ -1,9 +1,10 @@
 use std::ops;
 use std::f64;
 
+#[derive(Clone, Copy)]
 pub struct Vector2D {
-    x: f64,
-    y: f64
+    pub x: f64,
+    pub y: f64
 }
 
 impl Vector2D {
@@ -48,5 +49,13 @@ impl ops::Sub for Vector2D {
 
     fn sub(self, rhs: Self) -> Self {
         Vector2D { x: self.x - rhs.x, y: self.y - rhs.y }
+    }
+}
+
+impl ops::Mul for Vector2D {
+    type Output = Self;
+
+    fn mul(self, rhs: Self) -> Self {
+        Vector2D { x: self.x * rhs.x, y: self.y * rhs.y }
     }
 }
