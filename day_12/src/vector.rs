@@ -34,8 +34,8 @@ impl Vector2D {
         let x = f64x * cos - f64y * sin;
         let y = f64x * sin + f64y * cos;
 
-        self.x = x as i32;
-        self.y = y as i32;
+        self.x = x.round() as i32;
+        self.y = y.round() as i32;
     }
 }
 
