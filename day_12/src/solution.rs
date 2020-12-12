@@ -22,7 +22,7 @@ impl PuzzleTrait for Day12 {
         self.input = read_input_as_vec("./input/day_12.txt");
     }
 
-    // Part one: what is the Manhattan distance between the current location and the starting position?
+    // Part one: what is the Manhattan distance between the ferry's current location and the starting position?
     fn solve_part_one(&self) {
         let mut ferry = Ferry::new(&self.input);
 
@@ -37,7 +37,7 @@ impl PuzzleTrait for Day12 {
         println!("Answer part one: {} is the Manhattan distance between the start position and the current position", answer);
     }
 
-    // Part two: ___
+    // Part two: what is the Manhattan distance between the ferry's current location and the starting position?
     fn solve_part_two(&self) {
         let mut ferry = Ferry::new(&self.input);
 
