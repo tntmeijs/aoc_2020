@@ -1,15 +1,15 @@
 use std::ops;
 use std::f64;
 
-pub struct Vector {
+pub struct Vector2D {
     x: f64,
     y: f64
 }
 
-impl Vector {
+impl Vector2D {
     // Construct a new vector with all values set to zero
     pub fn new() -> Self {
-        Self { x: 0.0, y: 0.0 }
+        Vector2D { x: 0.0, y: 0.0 }
     }
 
     // Calculate the Manhattan distance between two points
@@ -21,25 +21,25 @@ impl Vector {
 
     // Rotate this vector by N degrees
     // Reference: https://matthew-brett.github.io/teaching/rotation_2d.html
-    fn rotate(&mut self, degrees: i32) {
+    pub fn rotate(&mut self, degrees: i32) {
         let radians = degrees as f64 * f64::consts::PI / 180.0;
         self.x = f64::cos(radians) - f64::sin(radians);
         self.y = f64::sin(radians) + f64::cos(radians);
     }
 }
 
-impl ops::Add for Vector {
+impl ops::Add for Vector2D {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self {
-        Self { x: self.x + rhs.x, y: self.y + rhs.y }
+        Vector2D { x: self.x + rhs.x, y: self.y + rhs.y }
     }
 }
 
-impl ops::Sub for Vector {
+impl ops::Sub for Vector2D {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self {
-        Self { x: self.x - rhs.x, y: self.y - rhs.y }
+        Vector2D { x: self.x - rhs.x, y: self.y - rhs.y }
     }
 }
