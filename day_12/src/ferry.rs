@@ -36,6 +36,7 @@ pub struct Ferry {
     actions: Vec<Action>,
     current_position: Vector2D,
     current_direction: Vector2D,
+    waypoint: Vector2D,
     next_action_index: usize
 }
 
@@ -63,8 +64,12 @@ impl Ferry {
         // The compass is represented by a 2D vector, whose axes are mapped as shown above
         let east = Vector2D { x: 1, y: 0 };
 
+        // According to the puzzle input, the waypoint starts (10, 1) relative to the ship
+        // The ship starts at (0, 0), which means that the waypoint should be at (10, 1) in world-space
+        let waypoint = Vector2D { x: 10, y: 1 };
+
         // Construct a ferry with all known data
-        Ferry { actions: actions, current_position: Vector2D::new(), current_direction: east, next_action_index: 0 }
+        Ferry { actions: actions, current_position: Vector2D::new(), current_direction: east, waypoint: waypoint, next_action_index: 0 }
     }
 
     // Move the ferry by executing the next action in the list
@@ -93,6 +98,40 @@ impl Ferry {
 
                 // Sum the new position and our current position to get the world-space position of the ferry
                 self.current_position = self.current_position + new_position;
+            },
+            Action::Invalid => ()
+        }
+
+        // Action executed successfully
+        true
+    }
+
+    // Move the ferry by executing the next action in the list
+    // Actions are interpreted as described here: https://adventofcode.com/2020/day/12#part2
+    // Returns true as long as an action was executed, false when no more actions are available
+    pub fn execute_next_action_rel(&mut self) -> bool {
+        // Last action has already been exectuted
+        if self.next_action_index >= self.actions.len() {
+            return false;
+        }
+
+        let action = &self.actions[self.next_action_index];
+        self.next_action_index += 1;
+
+        // Execute the action
+        match action {
+            Action::North(value)    => self.waypoint.y += value,
+            Action::South(value)    => self.waypoint.y -= value,
+            Action::East(value)     => self.waypoint.x += value,
+            Action::West(value)     => self.waypoint.x -= value,
+            Action::Left(value)     => self.waypoint.rotate(*value),
+            Action::Right(value)    => self.waypoint.rotate(-*value),
+            Action::Forward(value)  => {
+                // Move N times the relative distance from the ship to the waypoint
+                let ship_offset = Vector2D { x: self.waypoint.x * value, y: self.waypoint.y * value };
+
+                // Make the waypoint move with the ship
+                self.current_position = self.current_position + ship_offset;
             },
             Action::Invalid => ()
         }

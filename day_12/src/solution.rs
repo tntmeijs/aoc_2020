@@ -39,6 +39,16 @@ impl PuzzleTrait for Day12 {
 
     // Part two: ___
     fn solve_part_two(&self) {
-        println!("Answer part two: {}", -1);
+        let mut ferry = Ferry::new(&self.input);
+
+        loop {
+            if !ferry.execute_next_action_rel() {
+                // Last action has been reached, no more actions exist
+                break;
+            }
+        }
+
+        let answer = ferry.get_distance_from_start();
+        println!("Answer part two: {} is the Manhattan distance between the start position and the current position", answer);
     }
 }
