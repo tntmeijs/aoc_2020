@@ -81,13 +81,13 @@ impl Ferry {
 
         // Execute the action
         match action {
-            Action::North(value) => self.current_position.y += *value,
-            Action::South(value) => self.current_position.y -= *value,
-            Action::East(value) => self.current_position.x += *value,
-            Action::West(value) => self.current_position.x -= *value,
-            Action::Left(value) => self.current_direction.rotate(*value),
-            Action::Right(value) => self.current_direction.rotate(-*value),
-            Action::Forward(value) => {
+            Action::North(value)    => self.current_position.y += *value,
+            Action::South(value)    => self.current_position.y -= *value,
+            Action::East(value)     => self.current_position.x += *value,
+            Action::West(value)     => self.current_position.x -= *value,
+            Action::Left(value)     => self.current_direction.rotate(*value),
+            Action::Right(value)    => self.current_direction.rotate(-*value),
+            Action::Forward(value)  => {
                 // Multiply the direction with the forward distance to get an offset into the direction the ferry is facing
                 let new_position = self.current_direction * Vector2D { x: *value, y: *value };
 
