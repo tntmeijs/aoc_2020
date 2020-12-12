@@ -114,15 +114,6 @@ impl Grid {
         self.data[row][column].clone()
     }
 
-    // Check if the cell is set to the specified state
-    pub fn cell_equals(&self, row: usize, column: usize, state: SeatState) -> bool {
-        if row > self.rows || column > self.columns {
-            panic!("Cell ({}, {}) is out of bounds", row, column);
-        }
-
-        self.data[row][column] == state
-    }
-
     // Check if any cells are invalid
     pub fn is_valid(&self) -> bool {
         for row in 0..self.rows {

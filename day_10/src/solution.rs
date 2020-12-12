@@ -1,8 +1,6 @@
 use shared::input::read_input_as_vec;
 use shared::puzzle_trait::PuzzleTrait;
 
-use std::collections::BTreeMap;
-
 pub struct Day10 {
     input: Vec<u32>
 }
