@@ -1,6 +1,8 @@
 use shared::input::read_input_as_vec;
 use shared::puzzle_trait::PuzzleTrait;
 
+use super::ferry::Ferry;
+
 pub struct Day12 {
     input: Vec<String>
 }
@@ -22,7 +24,17 @@ impl PuzzleTrait for Day12 {
 
     // Part one: what is the Manhattan distance between the current location and the starting position?
     fn solve_part_one(&self) {
-        println!("Answer part one: {} is the Manhattan distance between the start position and the current position", -1);
+        let mut ferry = Ferry::new(&self.input);
+
+        loop {
+            if !ferry.execute_next_action_abs() {
+                // Last action has been reached, no more actions exist
+                break;
+            }
+        }
+
+        let answer = ferry.get_distance_from_start();
+        println!("Answer part one: {} is the Manhattan distance between the start position and the current position", answer);
     }
 
     // Part two: ___
