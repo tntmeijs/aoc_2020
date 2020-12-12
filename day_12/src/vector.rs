@@ -23,8 +23,15 @@ impl Vector2D {
     // Reference: https://matthew-brett.github.io/teaching/rotation_2d.html
     pub fn rotate(&mut self, degrees: i32) {
         let radians = degrees as f64 * f64::consts::PI / 180.0;
-        self.x = f64::cos(radians) - f64::sin(radians);
-        self.y = f64::sin(radians) + f64::cos(radians);
+
+        let cos = f64::cos(radians);
+        let sin = f64::sin(radians);
+
+        let x = self.x * cos - self.y * sin;
+        let y = self.x * sin + self.y * cos;
+
+        self.x = x;
+        self.y = y;
     }
 }
 
