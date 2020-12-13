@@ -10,3 +10,10 @@ This repository contains my code submissions for the Advent of Code 2020. I stru
 
 # Running the puzzles
 Execute `cargo run` in the root project directory
+
+# Action points
+Throughout this competition I learned the kind of problems I am good at and what I still need to work on.
+Below is a list of topics that I still need to investigate further as I was unable to complete those things during the Advent of Code.
+[ ] Chinese Remainder Theorem (day 13B).
+[ ] Tree construction and traversal (day 7AB).
+[ ] Finding N possible combinations (day 10B).
