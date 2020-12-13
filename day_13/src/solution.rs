@@ -62,15 +62,63 @@ impl PuzzleTrait for Day13 {
             }
         }
 
-        println!("{:?}", earliest_bus);
-
         let answer = earliest_bus.unwrap().0 * earliest_bus.unwrap().1;
         println!("Answer part one: {} is the ID of the earliest bus to the airport, multiplied with the waiting time", answer);
     }
 
-    // Part two: ___
+    // Part two: what is the earliest timestamp such that all of the listed bus IDs depart at offsets matching their positions in the list?
     fn solve_part_two(&self) {
-        let answer = -1;
-        println!("Answer part two: {}", answer);
+        // Only need the second line with bus IDs
+        let bus_ids = self.input[1].split(',').collect::<Vec<_>>();
+
+        let mut previous_timestamp = std::time::SystemTime::now().duration_since(std::time::SystemTime::UNIX_EPOCH).unwrap().as_secs();
+
+        // The puzzle says that the timestamp surely will be larger than 100000000000000
+        // The timestamp starts at that number to save some time when brute-forcing the solution
+        let mut timestamp = 100_000_000_000_000u64;
+        loop {
+            let mut first_departure_time = 0;
+            let mut all_good = true;
+
+            for (index, id) in bus_ids.iter().enumerate() {
+                // Found an 'x' in the input string
+                if id.parse::<u64>().is_err() {
+                    continue;
+                }
+
+                let bus_id = id.parse::<u64>().unwrap();
+
+                // Calculate next departure time as we did in the first solution
+                let route_process = timestamp % bus_id;
+                let time_left = bus_id - route_process;
+                let next_departure = timestamp + time_left;
+
+                // Save first departure time of the sequence
+                if index == 0 {
+                    first_departure_time = next_departure;
+                }
+
+                // Bus 'bus_id' needs to depart at timestamp + 'index'
+                if next_departure != first_departure_time as u64 + index as u64 {
+                    all_good = false;
+                }
+            }
+
+            // Found the timestamp at which all listed busses depart at offsets matching their positions in the list
+            if all_good {
+                println!("Answer part two: {} is the first timestamp at which all listed busses depart at offsets matching their positions in the list", first_departure_time);
+                return;
+            }
+
+            // Every 5M iterations, log the progress to show that the application is still running
+            if timestamp % 5_000_000 == 0 {
+                let current_timestamp = std::time::SystemTime::now().duration_since(std::time::SystemTime::UNIX_EPOCH).unwrap().as_secs();
+                println!("{}\tStill searching... timestamp: {}\ttook: {} seconds", current_timestamp, timestamp, current_timestamp - previous_timestamp);
+                previous_timestamp = current_timestamp;
+            }
+
+            // Brute force the next timestamp until a solution has been found
+            timestamp += 1;
+        }
     }
 }
