@@ -14,8 +14,8 @@ Execute `cargo run` in the root project directory
 # Action points
 Throughout this competition I learned the kind of problems I am good at and what I still need to work on.
 Below is a list of topics that I still need to investigate further as I was unable to complete those things during the Advent of Code.
-| Topic | Day | Comments |
-| ----- | ------- | -------- |
-| Chinese Remainder Theorem | Day 13 | Unable to complete the second solution. I had never heard of CRT. |
-| Tree construction and traversal | Day 7 | Managed to implement a tree-like structure and traverse it, but never found the solution to the puzzle. |
-| Find N possible combinations | Day 10 | Solved part 1, but was unable to come up with a proper way to determine the number of possible combinations for the second puzzle solution. |
+| Day | Topic | Comments |
+| --- | ----- | -------- |
+| 13 | Chinese Remainder Theorem | Unable to complete the second solution. I had never heard of CRT. |
+| 7 | Tree construction and traversal | Managed to implement a tree-like structure and traverse it, but never found the solution to the puzzle. |
+| 10 | Find N possible combinations | Solved part 1, but was unable to come up with a proper way to determine the number of possible combinations for the second puzzle solution. |
