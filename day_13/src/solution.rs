@@ -69,6 +69,7 @@ impl PuzzleTrait for Day13 {
     // Part two: what is the earliest timestamp such that all of the listed bus IDs depart at offsets matching their positions in the list?
     fn solve_part_two(&self) {
         // Only need the second line with bus IDs
+        #[allow(unused_variables)]
         let busses = self.input[1]
             .split(',')
             .filter(|item| item.parse::<u32>().is_ok())
