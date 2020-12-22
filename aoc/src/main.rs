@@ -17,6 +17,7 @@ use day_13::solution::Day13;
 use day_14::solution::Day14;
 use day_15::solution::Day15;
 use day_16::solution::Day16;
+use day_21::solution::Day21;
 use day_22::solution::Day22;
 
 use shared::puzzle_trait::PuzzleTrait;
@@ -43,6 +44,7 @@ fn main() {
     puzzles.insert(14, Box::new(Day14::new()));
     puzzles.insert(15, Box::new(Day15::new()));
     puzzles.insert(16, Box::new(Day16::new()));
+    puzzles.insert(21, Box::new(Day21::new()));
     puzzles.insert(22, Box::new(Day22::new()));
 
     // There is always one argument: the executable, all others are optional
