@@ -1,8 +1,6 @@
 use shared::input::read_input_as_vec;
 use shared::puzzle_trait::PuzzleTrait;
 
-use std::collections::HashMap;
-
 pub struct Day16 {
     input: Vec<String>
 }
